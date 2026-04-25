@@ -1,0 +1,108 @@
+:root {
+  /* Refined warm-neutral theme */
+  --bg-primary: #fcfbf8;
+  --bg-secondary: #f5f1ea;
+  --bg-tertiary: #ece5db;
+
+  /* Text */
+  --text-primary: #161513;
+  --text-secondary: #5d554d;
+  --text-muted: #8a8177;
+
+  /* Accent — warm salmon / rose gold */
+  --accent-primary: #a96f45;
+  --accent-hover: #925b35;
+  --accent-light: rgba(169, 111, 69, 0.12);
+  --accent-border: rgba(169, 111, 69, 0.24);
+
+  /* Borders & Shadows */
+  --border-light: #e3ddd4;
+  --border-medium: #cfc7bc;
+  --shadow-sm: 0 1px 2px rgba(22, 21, 19, 0.06);
+  --shadow-md: 0 12px 30px rgba(22, 21, 19, 0.08);
+  --shadow-lg: 0 24px 60px rgba(22, 21, 19, 0.12);
+
+  /* Typography */
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-brand: 'Great Vibes', cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(169, 111, 69, 0.08), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(22, 21, 19, 0.05), transparent 28%),
+    var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(169, 111, 69, 0.18);
+  color: var(--text-primary);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 4px;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Clean card utility (replaces glass-card) */
+.glass-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  border-radius: 4px;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-md);
+}
+
+/* Common text utilities */
+.glowing-text {
+  color: var(--text-secondary);
+}
+
+.accent-text {
+  color: var(--accent-primary);
+}

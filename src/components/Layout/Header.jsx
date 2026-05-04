@@ -4,6 +4,7 @@ import { navLinks } from '../../utils/data';
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     function handleScroll() {
@@ -42,12 +43,37 @@ export function Header() {
             Goggadi Creation
           </a>
 
-          <nav className="mini-nav" aria-label="Brand navigation">
+          <button
+            type="button"
+            className="mobile-menu-toggle"
+            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={menuOpen}
+            aria-controls="main-navigation"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className={`hamburger ${menuOpen ? 'is-open' : ''}`} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+
+          <nav id="main-navigation" className={`mini-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Brand navigation">
             {navLinks.map((item) => (
-              <a key={item.href} href={item.href}>
+              <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
                 {item.label}
               </a>
             ))}
+            <a
+              className="mini-nav-support"
+              href="https://wa.me/917982383793?text=Hi%2C%20I%20need%20support%20for%20your%20products"
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setMenuOpen(false)}
+            >
+              <Icon type="whatsapp" className="ui-icon ui-icon-sm" />
+              <span>Contact Support</span>
+            </a>
           </nav>
 
           <div className="header-actions">

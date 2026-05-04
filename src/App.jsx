@@ -14,17 +14,20 @@ import { imageCatalog, featuredBags, testimonials, lookbookImages, heroImage } f
 
 function App() {
   const [activeSlide, setActiveSlide] = useState(null);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [customImages, setCustomImages] = useState([]);
   const progressRef = useRef(null);
 
-  const galleryImages = useMemo(
-    () => [
+  const galleryImages = useMemo(() => {
+    const base = [
       heroImage,
       ...featuredBags.map((bag) => bag.image),
       ...testimonials.map((testimonial) => testimonial.image),
       ...lookbookImages,
-    ].filter(Boolean),
-    [],
-  );
+    ].filter(Boolean);
+    return [...customImages, ...base];
+  }, [customImages]);
 
   const openSlider = (imageId) => {
     const startIndex = galleryImages.findIndex((image) => image.id === imageId);
@@ -37,6 +40,54 @@ function App() {
   const currentSlide = activeSlide === null ? null : galleryImages[activeSlide];
 
   useScrollReveal();
+
+  // Initial page loading indicator (shown until full window load)
+  useEffect(() => {
+    const minimumVisibleTime = 650;
+    const startedAt = performance.now();
+    let hideTimer;
+
+    const hideLoader = () => {
+      const elapsed = performance.now() - startedAt;
+      const remainingTime = Math.max(minimumVisibleTime - elapsed, 0);
+      hideTimer = window.setTimeout(() => setIsPageLoading(false), remainingTime);
+    };
+
+    if (document.readyState === 'complete') {
+      hideLoader();
+      return () => window.clearTimeout(hideTimer);
+    }
+
+    window.addEventListener('load', hideLoader, { once: true });
+    return () => {
+      window.removeEventListener('load', hideLoader);
+      window.clearTimeout(hideTimer);
+    };
+  }, []);
+
+  // Load custom images from localStorage
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem('customImages');
+      if (raw) setCustomImages(JSON.parse(raw));
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  // Add a custom image (persist to localStorage)
+  const addCustomImage = (image) => {
+    const item = { id: `custom-${Date.now()}`, ...image };
+    const updated = [item, ...customImages];
+    setCustomImages(updated);
+    try {
+      window.localStorage.setItem('customImages', JSON.stringify(updated));
+    } catch (e) {
+      // ignore
+    }
+    // open the slider on the newly added image
+    setTimeout(() => openSlider(item.id), 50);
+  };
 
   // Scroll progress bar
   useEffect(() => {
@@ -55,6 +106,10 @@ function App() {
 
   return (
     <main className="page-shell">
+      <div className={`page-load-bar ${isPageLoading ? 'is-visible' : ''}`} aria-hidden="true">
+        <span />
+      </div>
+
       {/* Scroll progress bar at top of page */}
       <div className="scroll-progress" ref={progressRef} />
 
@@ -114,6 +169,60 @@ function App() {
         </svg>
         <span className="whatsapp-label">Chat with us</span>
       </a>
+
+      {/* Floating Add Image button (opens modal) */}
+      <button
+        type="button"
+        className="add-image-float"
+        aria-label="Add image"
+        onClick={() => setShowAddModal(true)}
+      >
+        +
+      </button>
+
+      {/* Add Image Modal */}
+      {showAddModal && (
+        <div className="modal-backdrop" role="dialog" aria-modal="true">
+          <div className="modal-card">
+            <h3>Add image and details</h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const form = e.target;
+                const url = form.elements.url.value.trim();
+                const title = form.elements.title.value.trim();
+                const price = form.elements.price.value.trim();
+                const description = form.elements.description.value.trim();
+                if (!url) return;
+                addCustomImage({ src: url, title: title || 'New Image', price, description });
+                setShowAddModal(false);
+                form.reset();
+              }}
+            >
+              <label>
+                Image URL
+                <input name="url" type="url" placeholder="https://.../image.jpg" required />
+              </label>
+              <label>
+                Title
+                <input name="title" type="text" placeholder="Title" />
+              </label>
+              <label>
+                Price
+                <input name="price" type="text" placeholder="₹199" />
+              </label>
+              <label>
+                Description
+                <textarea name="description" placeholder="Short description" />
+              </label>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowAddModal(false)}>Cancel</button>
+                <button type="submit">Add image</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       <Lightbox
         currentSlide={currentSlide}

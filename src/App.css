@@ -2026,6 +2026,7 @@
 /* Thumbnail strip */
 .showcase-thumbs {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 

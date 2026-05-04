@@ -67,6 +67,39 @@ const crossBodyImages = Object.entries(
     title: `Cross Body Bag - View ${index + 1}`,
   }))
 
+const crossBodyVarietyTitles = [
+  'Radha Side Profile',
+  'Vrindavan Lifestyle',
+  'Kedarnath Market Style',
+  'Kedarnath Temple Print',
+  'Krishna Lifestyle',
+  'Krishna Front Detail',
+  'Radha Tabletop Detail',
+  'Temple Travel Style',
+  'Premium Side Pocket',
+  'Everyday Street Look',
+  'Mandir Edition',
+  'Travel Ready Crossbody',
+  'Heritage Print Detail',
+  'Classic Cream Crossbody',
+  'Pilgrim Edition',
+  'Statement Strap View',
+  'Artisan Front View',
+  'Festival Ready Style',
+]
+
+const crossBodyVarietyImages = Object.entries(
+  import.meta.glob('../assets/WhatsApp Image 2026-05-04*.jpeg', { eager: true, import: 'default' }),
+)
+  .sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
+  .map(([, source], index) => ({
+    id: `cross-body-variety-${index}`,
+    src: source,
+    title: crossBodyVarietyTitles[index] ?? `Cross Body Bag Variety ${index + 1}`,
+  }))
+
+const allCrossBodyImages = [...crossBodyImages, ...crossBodyVarietyImages]
+
 // ─── Products with real names, prices, and images from subfolders ───
 const products = [
   {
@@ -87,11 +120,11 @@ const products = [
     name: 'Cross Body Bag',
     price: 299,
     originalPrice: 549,
-    description: 'Stylish cross body bag with adjustable strap and secure zip closure — ideal for travel and everyday carry.',
-    tag: 'New Arrival',
+    description: 'Stylish cross body bag with adjustable strap, secure zip closure, and multiple devotional travel print varieties.',
+    tag: 'New Varieties',
     badgeType: 'reduced',
-    images: crossBodyImages,
-    image: crossBodyImages[0],
+    images: allCrossBodyImages,
+    image: allCrossBodyImages[0],
     rating: '4.8',
     reviews: 64,
   },
@@ -165,4 +198,6 @@ export {
     products,
     cottonSlingImages,
     crossBodyImages,
+    crossBodyVarietyImages,
+    allCrossBodyImages,
 };

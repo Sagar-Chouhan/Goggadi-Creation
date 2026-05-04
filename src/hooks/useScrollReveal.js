@@ -65,7 +65,6 @@ export function useScrollReveal() {
     const parallaxEls = document.querySelectorAll('[data-parallax]');
 
     function handleParallax() {
-      const scrollY = window.scrollY;
       parallaxEls.forEach((el) => {
         const speed = parseFloat(el.getAttribute('data-parallax')) || 0.15;
         const rect = el.getBoundingClientRect();
@@ -83,8 +82,6 @@ export function useScrollReveal() {
     // ─── 3. Header shrink on scroll ───
     const header = document.querySelector('.site-header');
     const brandBar = document.querySelector('.brand-bar');
-    let lastScroll = 0;
-
     function handleHeaderScroll() {
       const scrollY = window.scrollY;
 
@@ -103,8 +100,6 @@ export function useScrollReveal() {
           brandBar.classList.remove('brand-bar-hidden');
         }
       }
-
-      lastScroll = scrollY;
     }
 
     window.addEventListener('scroll', handleHeaderScroll, { passive: true });

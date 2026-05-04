@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export function Lightbox({ currentSlide, galleryImages, activeSlide, setActiveSlide, closeSlider }) {
-  const goNext = () => {
+  const goNext = useCallback(() => {
     setActiveSlide((current) =>
       current === null ? null : (current + 1) % galleryImages.length,
     )
-  }
+  }, [galleryImages.length, setActiveSlide])
 
-  const goPrev = () => {
+  const goPrev = useCallback(() => {
     setActiveSlide((current) =>
       current === null ? null : (current - 1 + galleryImages.length) % galleryImages.length,
     )
-  }
+  }, [galleryImages.length, setActiveSlide])
 
   useEffect(() => {
     if (activeSlide === null) {
@@ -32,7 +32,7 @@ export function Lightbox({ currentSlide, galleryImages, activeSlide, setActiveSl
 
     window.addEventListener('keydown', handleKeydown)
     return () => window.removeEventListener('keydown', handleKeydown)
-  }, [activeSlide, galleryImages.length, setActiveSlide])
+  }, [activeSlide, goNext, goPrev, setActiveSlide])
 
   if (!currentSlide) return null;
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function Icon({ type, className = 'ui-icon' }) {
   if (type === 'bag') {
     return (

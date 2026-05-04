@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { brandDetails, imageCatalog } from '../../utils/data';
 
 export function Hero({ openSlider }) {

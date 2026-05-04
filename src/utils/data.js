@@ -39,7 +39,7 @@ const imageCatalog = Object.entries(
   import.meta.glob('../assets/*.jpeg', { eager: true, import: 'default' }),
 )
   .sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
-  .map(([path, source], index) => ({
+  .map(([, source], index) => ({
     id: index,
     src: source,
     title: imageTitles[index] ?? `Handbag Style ${index + 1}`,
@@ -50,7 +50,7 @@ const cottonSlingImages = Object.entries(
   import.meta.glob('../assets/Coton Sling Bag - 199 price/*.jpeg', { eager: true, import: 'default' }),
 )
   .sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
-  .map(([path, source], index) => ({
+  .map(([, source], index) => ({
     id: `cotton-sling-${index}`,
     src: source,
     title: `Cotton Sling Bag - View ${index + 1}`,
@@ -61,7 +61,7 @@ const crossBodyImages = Object.entries(
   import.meta.glob('../assets/Cross body bag - price 299/*.jpeg', { eager: true, import: 'default' }),
 )
   .sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
-  .map(([path, source], index) => ({
+  .map(([, source], index) => ({
     id: `cross-body-${index}`,
     src: source,
     title: `Cross Body Bag - View ${index + 1}`,

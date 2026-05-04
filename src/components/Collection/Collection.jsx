@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { imageCatalog } from '../../utils/data';
 
 export function Collection({ openSlider }) {

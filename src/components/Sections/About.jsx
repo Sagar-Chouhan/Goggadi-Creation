@@ -1,4 +1,3 @@
-import React from 'react';
 import { craftsmanshipPoints } from '../../utils/data';
 
 export function About() {

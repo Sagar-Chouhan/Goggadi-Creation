@@ -16,7 +16,14 @@ function App() {
   const [activeSlide, setActiveSlide] = useState(null);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [customImages, setCustomImages] = useState([]);
+  const [customImages, setCustomImages] = useState(() => {
+    try {
+      const raw = window.localStorage.getItem('customImages');
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
   const progressRef = useRef(null);
 
   const galleryImages = useMemo(() => {
@@ -65,28 +72,19 @@ function App() {
     };
   }, []);
 
-  // Load custom images from localStorage
-  useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem('customImages');
-      if (raw) setCustomImages(JSON.parse(raw));
-    } catch (e) {
-      // ignore
-    }
-  }, []);
-
   // Add a custom image (persist to localStorage)
   const addCustomImage = (image) => {
     const item = { id: `custom-${Date.now()}`, ...image };
-    const updated = [item, ...customImages];
-    setCustomImages(updated);
-    try {
-      window.localStorage.setItem('customImages', JSON.stringify(updated));
-    } catch (e) {
-      // ignore
-    }
-    // open the slider on the newly added image
-    setTimeout(() => openSlider(item.id), 50);
+    setCustomImages((currentImages) => {
+      const updated = [item, ...currentImages];
+      try {
+        window.localStorage.setItem('customImages', JSON.stringify(updated));
+      } catch {
+        // ignore storage errors
+      }
+      return updated;
+    });
+    setActiveSlide(0);
   };
 
   // Scroll progress bar

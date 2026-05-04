@@ -1,4 +1,3 @@
-import React from 'react';
 import { lookbookImages } from '../../utils/data';
 
 export function Lookbook({ openSlider }) {
